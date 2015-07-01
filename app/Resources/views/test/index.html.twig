@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+
+        <div>
+            {% for type, messages in app.session.flashBag.all %}
+                {% for message in messages %}
+                    <div class="{{ type }}">
+                        {{ message|trans({}, 'FOSUserBundle') }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+                <h1>Здравствуйте, {{app.user.username}}!</h1>
+                <a href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a> 
+                <h1>Выберите тест:</h1>
+                <div id="myApp" ng-app="myApp">
+                    <div ng-controller="showTests">
+                        <div ng-repeat="test in tests">
+                            <h2><a href="/web/test/{[{test.id}]}">{[{test.title}]}</a></h2>
+                            <div>{[{test.description}]}</div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <h1>Здравствуйте!</h1>
+                <p>Для приёма на работу, необходимо пройти несколько тестов.</p>
+                <p>Для начала авторизируйтесь пройдите регистрацию:</p>
+
+                <h2>Авторизация:</h2>
+                {{ render(controller('FOSUserBundle:Security:login')) }}
+                <h2>Регистрация:</h2>
+                {{ render(controller('FOSUserBundle:Registration:register')) }}
+
+            {% endif %}
+
+
+        </div>
+    {% endblock %}
+    {% block scripts %}
+        <script type="text/javascript" src="/web/js/front.js"></script>
+    {% endblock %}

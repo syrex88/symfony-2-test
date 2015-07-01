@@ -1,0 +1,12 @@
+#fos_user_registration_form label
+{
+    min-width: 150px;
+}
+#fos_user_registration_form div
+{
+    margin-bottom: 10px;
+}
+input
+{
+    padding: 3px;
+}

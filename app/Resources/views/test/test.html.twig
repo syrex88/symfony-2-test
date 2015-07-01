@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <div id="myApp" ng-app="myApp">
+
+            <form ng-submit="submit()"  ng-controller="showTest" novalidate  name="TestForm">
+                <h1>{[{title}]}</h1>
+                <div>{[{description}]}</div>
+                <div class="questions"> 
+                    <hr />
+                    <div ng-repeat="question in questions">
+
+                        <div><b>{[{question.question}]}</b></div>
+                        <div ng-repeat="file in question.files">
+                            <div ng-switch on="file.type">
+                                <div ng-switch-when="image">
+                                    <p>{[{file.name}]}</p>
+                                    <img src="/web/files/{[{file.name_file}]}" width="100" alt="" />
+
+                                </div>  
+                                <div ng-switch-default>
+                                    <a target="_blank" href="/web/files/{[{file.name_file}]}">{[{file.name}]}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-switch on="question.type">      
+                            <div ng-switch-when="checkbox">
+                                <div ng-repeat="answer in question.answers">
+                                    <input type="checkbox"  id="answer[{[{question.id}]}][{[{answer.id}]}]" name="answer[][{[{question.id}]}]" value="{[{answer.id}]}">
+                                    <label for="answer[{[{question.id}]}][{[{answer.id}]}]">{[{answer.description}]}</label>
+                                </div>   
+                                <hr />
+                            </div>
+                            <div ng-switch-default>
+                                <div ng-repeat="answer in question.answers">
+                                    <input type="radio"   id="answer[{[{question.id}]}][{[{answer.id}]}]" name="answer[][{[{question.id}]}]" value="{[{answer.id}]}">
+                                    <label for="answer[{[{question.id}]}][{[{answer.id}]}]">{[{answer.description}]}</label>
+                                </div>   
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="testid" name="testid" value="{{id}}" />
+                <input type="hidden" id="userid" name="userid" value="{{ app.user.id }}" />
+                
+                <div class="message">{[{message}]}</div>
+                <div class="error">{[{error}]}</div>
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-flash"></span> Завершить тест!
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="/web/js/showtest.js"></script>
+{% endblock %}
